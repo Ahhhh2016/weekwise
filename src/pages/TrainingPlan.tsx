@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Pencil, Printer } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Pencil, Printer, Bot, Sparkles } from "lucide-react";
+import { ChatContainer } from "@/components/ChatContainer";
+import { TrainingPlan as TrainingPlanType } from "@/lib/api";
 
 interface TrainingDay {
   content: string;
@@ -36,6 +40,8 @@ export default function TrainingPlan() {
     saturday: false,
     sunday: false,
   });
+
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const [trainingData, setTrainingData] = useState<Record<string, TrainingDay>>({
     monday: {
@@ -144,7 +150,71 @@ export default function TrainingPlan() {
     setTempValue("");
   };
 
+  const handleTrainingPlanGenerated = (aiTrainingPlan: TrainingPlanType) => {
+    console.log('🎯 TrainingPlan - 接收到训练计划数据:', aiTrainingPlan);
+    
+    if (aiTrainingPlan && aiTrainingPlan.schedule) {
+      console.log('✅ TrainingPlan - 训练计划数据有效，开始处理');
+      console.log('📅 TrainingPlan - 训练计划标题:', aiTrainingPlan.title);
+      console.log('📋 TrainingPlan - 训练计划日程:', aiTrainingPlan.schedule);
+      
+      // 更新标题
+      if (aiTrainingPlan.title) {
+        console.log('📝 TrainingPlan - 更新标题为:', aiTrainingPlan.title);
+        setTitle(aiTrainingPlan.title);
+      }
+
+      // 转换AI生成的训练计划数据格式
+      const newTrainingData: Record<string, TrainingDay> = {};
+      const dayMapping: Record<string, string> = {
+        '周一': 'monday',
+        '周二': 'tuesday', 
+        '周三': 'wednesday',
+        '周四': 'thursday',
+        '周五': 'friday',
+        '周六': 'saturday',
+        '周日': 'sunday'
+      };
+
+      console.log('🔄 TrainingPlan - 开始转换数据格式');
+      aiTrainingPlan.schedule.forEach(day => {
+        const dayKey = dayMapping[day.day];
+        console.log(`📅 TrainingPlan - 处理${day.day} -> ${dayKey}:`, day);
+        if (dayKey) {
+          newTrainingData[dayKey] = {
+            content: day.content,
+            duration: day.duration,
+            notes: day.notes
+          };
+        } else {
+          console.warn(`⚠️ TrainingPlan - 未找到${day.day}的映射`);
+        }
+      });
+
+      console.log('💾 TrainingPlan - 转换后的数据:', newTrainingData);
+      setTrainingData(prev => ({ ...prev, ...newTrainingData }));
+      setIsChatOpen(false);
+      console.log('✅ TrainingPlan - 训练计划数据更新完成');
+    } else {
+      console.error('❌ TrainingPlan - 训练计划数据无效:', aiTrainingPlan);
+    }
+  };
+
   useEffect(() => {
+    // 检查是否有生成的训练计划数据
+    const generatedPlan = localStorage.getItem('generatedTrainingPlan');
+    if (generatedPlan) {
+      try {
+        const trainingPlan = JSON.parse(generatedPlan);
+        console.log('📥 TrainingPlan - 从localStorage读取到训练计划:', trainingPlan);
+        handleTrainingPlanGenerated(trainingPlan);
+        // 清除localStorage中的数据，避免重复处理
+        localStorage.removeItem('generatedTrainingPlan');
+      } catch (error) {
+        console.error('❌ TrainingPlan - 解析localStorage中的训练计划失败:', error);
+      }
+    }
+
     // 添加打印快捷键
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === 'p') {

@@ -4,6 +4,7 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { Button } from "./ui/button";
 import { Dumbbell, CheckCircle2, Languages } from "lucide-react";
+import { apiService } from "../lib/api";
 
 interface Message {
   id: string;
@@ -11,7 +12,11 @@ interface Message {
   isUser: boolean;
 }
 
-export const ChatContainer = () => {
+interface ChatContainerProps {
+  onTrainingPlanGenerated?: (trainingPlan: any) => void;
+}
+
+export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) => {
   const navigate = useNavigate();
   const [language, setLanguage] = useState<'zh' | 'en'>('zh');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -59,7 +64,7 @@ export const ChatContainer = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
       text,
@@ -69,25 +74,63 @@ export const ChatContainer = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    // 模拟 AI 分析和回复
-    setTimeout(() => {
+    try {
+      // 调用聊天API
+      const chatHistory = messages.map(msg => ({
+        role: msg.isUser ? 'user' as const : 'assistant' as const,
+        content: msg.text
+      }));
+
+      const chatResponse = await apiService.chat(text, chatHistory);
+      
+      // 添加调试信息
+      console.log('🔍 ChatContainer - AI响应数据:', chatResponse);
+      console.log('🔍 ChatContainer - 训练计划数据:', chatResponse.trainingPlan);
+      
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: t.aiResponse,
+        text: chatResponse.response,
         isUser: false,
       };
+      
       setMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
+
+      // 检查是否有训练计划生成
+      if (chatResponse.trainingPlan) {
+        console.log('✅ ChatContainer - 检测到训练计划，准备传递给TrainingPlan组件');
+        if (onTrainingPlanGenerated) {
+          console.log('📤 ChatContainer - 调用onTrainingPlanGenerated回调');
+          onTrainingPlanGenerated(chatResponse.trainingPlan);
+        } else {
+          console.warn('⚠️ ChatContainer - onTrainingPlanGenerated回调未定义');
+        }
+        
+        // 显示完成状态
+        setTimeout(() => {
+          setIsCompleted(true);
+        }, 800);
+      } else {
+        console.log('❌ ChatContainer - 未检测到训练计划数据');
+      }
+    } catch (error) {
+      console.error('Error calling AI API:', error);
       
-      // 显示完成状态
-      setTimeout(() => {
-        setIsCompleted(true);
-      }, 800);
-    }, 2000);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: language === 'zh' 
+          ? "抱歉，AI服务暂时不可用。请稍后再试。" 
+          : "Sorry, AI service is temporarily unavailable. Please try again later.",
+        isUser: false,
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
+      setIsTyping(false);
+    }
   };
 
   return (
-    <div className="relative flex flex-col h-screen bg-background overflow-hidden">
+    <div className="relative flex flex-col h-full bg-background overflow-hidden">
       {/* 动态背景效果 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 -left-4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
