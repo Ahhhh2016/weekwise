@@ -26,7 +26,7 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <div className="border-t border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 border-t border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-2xl z-50">
       <div className="flex gap-3 max-w-4xl mx-auto">
         <div className="relative flex-1">
           <Textarea

@@ -170,7 +170,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       </div>
 
       {/* Messages */}
-      <div className="relative flex-1 overflow-y-auto p-6">
+      <div className="relative flex-1 overflow-y-auto p-6 pb-32">
         <div className="max-w-4xl mx-auto space-y-6">
           {messages.map((message) => (
             <ChatMessage
