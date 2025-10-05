@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { Button } from "./ui/button";
-import { Dumbbell, Sparkles, CheckCircle2, Languages } from "lucide-react";
+import { Dumbbell, CheckCircle2, Languages } from "lucide-react";
 
 interface Message {
   id: string;
@@ -22,20 +22,20 @@ export const ChatContainer = () => {
   const translations = {
     zh: {
       title: "weekwise",
-      subtitle: "一键生成可打印的周健身计划",
-      initialMessage: "你好！我是你的私人健身教练 🏋️‍♂️ 告诉我你的健身目标，我会为你定制专属训练计划！",
-      aiResponse: "太好了！我已经根据你的目标分析了最适合的训练方案。让我们开始打造更好的自己吧！💪",
+      subtitle: "智能生成你的每周训练计划，把进步贴在墙上，一周一小步。",
+      initialMessage: "哈喽！我是你的健身伙伴weekwise 🏋🏻‍♂️\n告诉我你的目标，我会帮你制定一个属于你的每周训练计划。\n\n你可以这样告诉我：\n\n\"我想减脂但不想太累\"\n\"我最近在练CrossFit，想更系统地安排训练\"\n\"我想改善体态，多练核心和背部\"\n\"我没有器械，只能在家练\"\n\n或者，直接和我聊聊：\n\n\"我想变得更有力量。\"\n\"我希望能坚持下来，不再半途而废。\"\n\n我会倾听，然后帮你把目标变成一个可以贴在墙上的计划 🧾💪",
+      aiResponse: "太好了！我已经根据你的目标分析了最适合的训练方案。让我们开始打造更好的自己吧！🎉",
       completedTitle: "训练计划已生成！",
-      completedSubtitle: "根据你的目标定制的专属方案已准备就绪",
+      completedSubtitle: "想调整内容吗？直接点击就能修改，准备好后从右上角打印吧。🌱",
       buttonText: "打印周健身计划"
     },
     en: {
       title: "weekwise",
-      subtitle: "Print your progress. One week at a time.",
-      initialMessage: "Hello! I'm your personal fitness coach 🏋️‍♂️ Tell me your fitness goals and I'll create a custom training plan for you!",
-      aiResponse: "Great! I've analyzed the best training program for your goals. Let's start building a better you! 💪",
+      subtitle: "Talk. Train. Transform.",
+      initialMessage: "Hello! I'm Weekwise, your fitness buddy 🏋🏻‍♂️\n Tell me your goals and I'll create a weekly training plan just for you. \n\nYou can tell me things like: \n\n\"I want to lose fat without overtraining myself.\"\n\"I've been doing CrossFit lately and want a more structured approach.\"\n\"I want to improve my posture and focus on my core and back.\"\n\"I don't have any equipment, so I can only train at home.\"\n\nOr, just chat with me: \n\n\"I want to get stronger.\"\n\"I hope to stick with it and not give up halfway.\"\n\nI'll listen and help you turn your goals into a plan you can post on your wall 🧾💪",
+      aiResponse: "Great! I've analyzed the best training program for your goals. Let's start building a better you! 🎉",
       completedTitle: "Training Plan Generated!",
-      completedSubtitle: "Your customized plan based on your goals is ready",
+      completedSubtitle: "Want to adjust the content? Just click to modify it, and print it from the top right corner when you are ready. 🌱",
       buttonText: "Print Weekly Fitness Plan"
     }
   };
@@ -106,8 +106,7 @@ export const ChatContainer = () => {
               <h1 className="text-2xl font-bold font-outfit bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {t.title}
               </h1>
-              <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
+              <p className="text-sm text-muted-foreground">
                 {t.subtitle}
               </p>
             </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
@@ -33,13 +33,10 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="告诉我你的健身目标... (例如：增肌、减脂、提高耐力)"
-            className="min-h-[70px] resize-none bg-input/50 backdrop-blur-sm border-border/50 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary transition-all pr-12 rounded-2xl shadow-lg"
+            placeholder=""
+            className="min-h-[70px] resize-none bg-input/50 backdrop-blur-sm border-border/50 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary transition-all rounded-2xl shadow-lg"
             disabled={disabled}
           />
-          <div className="absolute bottom-3 right-3 pointer-events-none">
-            <Sparkles className="w-4 h-4 text-muted-foreground/40" />
-          </div>
         </div>
         <Button
           onClick={handleSend}

@@ -158,8 +158,8 @@ export default function TrainingPlan() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex justify-center items-center py-5" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
-      <div className="poster-container w-[210mm] h-[297mm] max-w-full bg-card/95 backdrop-blur-sm p-5 rounded-3xl shadow-2xl relative border border-primary/10 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex justify-center items-center py-5" >
+      <div className="poster-container w-[210mm] h-[297mm] max-w-full bg-card/95 backdrop-blur-sm p-5 rounded-3xl shadow-2xl relative border border-primary/10 flex flex-col overflow-hidden" style={{ paddingTop: '30px', paddingLeft: '50px', paddingRight: '50px' }}>
         
         {/* Decorative gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none rounded-3xl"></div>
@@ -221,25 +221,25 @@ export default function TrainingPlan() {
         <table className="schedule-table w-full mb-2 relative z-10 bg-card rounded-2xl overflow-hidden border border-primary/20 shadow-lg table-fixed">
           <thead>
             <tr className="bg-gradient-to-r from-primary via-accent to-secondary">
-              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[10%]">星期</th>
-              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[32%]">训练内容</th>
+              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[10%]"></th>
+              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[43%]">训练内容</th>
               <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[11%]">时长</th>
-              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[39%]">重点/备注</th>
+              <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[28%]">重点/备注</th>
               <th className="text-primary-foreground p-1.5 text-center font-semibold text-xs sticky top-0 w-[8%]">完成</th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周一</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.monday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周一</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.monday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('monday', 'content')}>
                 {editingCell?.day === 'monday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -254,7 +254,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('monday', 'duration')}>
                 {editingCell?.day === 'monday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -277,8 +277,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.monday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.monday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('monday', 'notes')}>
                 {editingCell?.day === 'monday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -300,7 +300,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.monday}
                   onCheckedChange={() => toggleComplete('monday')}
@@ -309,16 +309,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周二</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.tuesday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周二</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.tuesday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('tuesday', 'content')}>
                 {editingCell?.day === 'tuesday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -333,7 +333,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('tuesday', 'duration')}>
                 {editingCell?.day === 'tuesday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -356,8 +356,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.tuesday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.tuesday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('tuesday', 'notes')}>
                 {editingCell?.day === 'tuesday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -379,7 +379,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.tuesday}
                   onCheckedChange={() => toggleComplete('tuesday')}
@@ -388,16 +388,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周三</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.wednesday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周三</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.wednesday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('wednesday', 'content')}>
                 {editingCell?.day === 'wednesday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -412,7 +412,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('wednesday', 'duration')}>
                 {editingCell?.day === 'wednesday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -435,8 +435,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.wednesday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.wednesday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('wednesday', 'notes')}>
                 {editingCell?.day === 'wednesday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -458,7 +458,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.wednesday}
                   onCheckedChange={() => toggleComplete('wednesday')}
@@ -467,16 +467,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周四</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.thursday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周四</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.thursday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('thursday', 'content')}>
                 {editingCell?.day === 'thursday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -491,7 +491,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('thursday', 'duration')}>
                 {editingCell?.day === 'thursday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -514,8 +514,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.thursday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.thursday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('thursday', 'notes')}>
                 {editingCell?.day === 'thursday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -537,7 +537,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.thursday}
                   onCheckedChange={() => toggleComplete('thursday')}
@@ -546,16 +546,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周五</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.friday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周五</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.friday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('friday', 'content')}>
                 {editingCell?.day === 'friday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -570,7 +570,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('friday', 'duration')}>
                 {editingCell?.day === 'friday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -593,8 +593,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.friday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.friday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('friday', 'notes')}>
                 {editingCell?.day === 'friday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -616,7 +616,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.friday}
                   onCheckedChange={() => toggleComplete('friday')}
@@ -625,16 +625,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周六</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.saturday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周六</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.saturday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('saturday', 'content')}>
                 {editingCell?.day === 'saturday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -649,7 +649,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('saturday', 'duration')}>
                 {editingCell?.day === 'saturday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -672,8 +672,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.saturday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.saturday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('saturday', 'notes')}>
                 {editingCell?.day === 'saturday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -695,7 +695,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.saturday}
                   onCheckedChange={() => toggleComplete('saturday')}
@@ -704,16 +704,16 @@ export default function TrainingPlan() {
               </td>
             </tr>
             <tr className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 group">
-              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[88px] align-middle">周日</td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.sunday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className="day-cell bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-center text-xs p-1.5 group-hover:scale-105 transition-transform h-[70px] align-middle">周日</td>
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.sunday.content, 'content')} leading-tight text-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('sunday', 'content')}>
                 {editingCell?.day === 'sunday' && editingCell?.field === 'content' ? (
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[80px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -728,7 +728,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[88px]"
+              <td className="time-cell bg-gradient-to-br from-muted to-muted/50 text-center font-bold text-primary text-xs align-middle p-1.5 rounded-lg relative group/edit cursor-pointer h-[70px]"
                   onClick={() => startEditing('sunday', 'duration')}>
                 {editingCell?.day === 'sunday' && editingCell?.field === 'duration' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -751,8 +751,8 @@ export default function TrainingPlan() {
                   </>
                 )}
               </td>
-              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.sunday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[88px]`}
-                  style={{ maxHeight: '88px', display: 'block', boxSizing: 'border-box' }}
+              <td className={`content-cell p-1.5 ${getDynamicFontSize(trainingData.sunday.notes, 'notes')} leading-tight text-muted-foreground relative group/edit cursor-pointer h-[70px]`}
+                  style={{ maxHeight: '70px', display: 'block', boxSizing: 'border-box' }}
                   onClick={() => startEditing('sunday', 'notes')}>
                 {editingCell?.day === 'sunday' && editingCell?.field === 'notes' ? (
                   <div onClick={(e) => e.stopPropagation()}>
@@ -774,7 +774,7 @@ export default function TrainingPlan() {
                   </div>
                 )}
               </td>
-              <td className="text-center align-middle p-1.5 h-[88px]">
+              <td className="text-center align-middle p-1.5 h-[70px]">
                 <Checkbox 
                   checked={completed.sunday}
                   onCheckedChange={() => toggleComplete('sunday')}
@@ -885,29 +885,39 @@ export default function TrainingPlan() {
             @page {
               size: A4 portrait;
               margin: 0;
+              padding: 0;
+            }
+            
+            * {
+              -webkit-print-color-adjust: exact !important;
+              color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
             
             html, body {
               background: white !important;
               padding: 0 !important;
               margin: 0 !important;
-              height: 297mm !important;
-              width: 210mm !important;
+              height: 100vh !important;
+              width: 100vw !important;
+              overflow: hidden !important;
             }
             
             body > div {
               padding: 0 !important;
-              display: flex !important;
-              justify-content: center !important;
-              align-items: center !important;
+              margin: 0 !important;
+              display: block !important;
+              height: 100vh !important;
+              width: 100vw !important;
             }
             
             .poster-container {
-              width: 210mm !important;
-              height: 297mm !important;
+              width: 100% !important;
+              height: 100vh !important;
               max-width: none !important;
+              max-height: 100vh !important;
               margin: 0 !important;
-              padding: 10mm !important;
+              padding: 8mm !important;
               border-radius: 0 !important;
               box-shadow: none !important;
               border: none !important;
@@ -915,15 +925,97 @@ export default function TrainingPlan() {
               backdrop-filter: none !important;
               display: flex !important;
               flex-direction: column !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            .header {
+              flex-shrink: 0 !important;
+              margin-bottom: 4mm !important;
             }
             
             .schedule-table {
               flex: 1 !important;
               display: table !important;
+              table-layout: fixed !important;
+              width: 100% !important;
+              height: auto !important;
+              max-height: calc(100vh - 120mm) !important;
+              overflow: hidden !important;
+            }
+            
+            .schedule-table tbody tr {
+              height: 10mm !important;
+              max-height: 10mm !important;
+            }
+            
+            .schedule-table tbody tr td {
+              height: 10mm !important;
+              max-height: 10mm !important;
+              padding: 1mm !important;
+              vertical-align: top !important;
+              overflow: hidden !important;
+            }
+            
+            .schedule-table tbody tr td.day-cell,
+            .schedule-table tbody tr td.time-cell {
+              vertical-align: middle !important;
+              text-align: center !important;
+            }
+            
+            .content-cell div {
+              max-height: 8mm !important;
+              overflow: hidden !important;
+              font-size: 9px !important;
+              line-height: 1.2 !important;
+            }
+            
+            .tips-section, .strategy-section {
+              flex-shrink: 0 !important;
+              margin-top: 2mm !important;
+              padding: 2mm !important;
+              font-size: 9px !important;
+            }
+            
+            .strategy-grid {
+              display: grid !important;
+              grid-template-columns: repeat(4, 1fr) !important;
+              gap: 1mm !important;
+            }
+            
+            .strategy-item {
+              padding: 1mm !important;
+              font-size: 8px !important;
+            }
+            
+            .footer {
+              flex-shrink: 0 !important;
+              margin-top: 1mm !important;
+              font-size: 10px !important;
             }
 
-            .hover\\:bg-muted\\/30:hover {
+            .hover\\:bg-muted\\/30:hover,
+            .hover\\:bg-gradient-to-r:hover,
+            .group:hover {
               background: transparent !important;
+              transform: none !important;
+            }
+            
+            .print\\:hidden {
+              display: none !important;
+            }
+            
+            /* 强制单页显示 */
+            .poster-container::after {
+              content: "" !important;
+              page-break-after: avoid !important;
+            }
+            
+            /* 防止内容分页 */
+            .schedule-table,
+            .tips-section,
+            .strategy-section {
+              page-break-inside: avoid !important;
             }
           }
         `}</style>

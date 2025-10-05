@@ -36,7 +36,18 @@ export const ChatMessage = ({ message, isUser, isTyping }: ChatMessageProps) => 
             <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-pulse-glow" style={{ animationDelay: "0.4s" }} />
           </div>
         ) : (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message}</p>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            {message.split(/(".*?")/g).map((part, index) => {
+              if (part.startsWith('"') && part.endsWith('"')) {
+                return (
+                  <span key={index} className="italic font-medium text-primary-foreground/90 bg-white/10 px-2 py-0.5 rounded">
+                    {part}
+                  </span>
+                );
+              }
+              return part;
+            })}
+          </p>
         )}
       </div>
 
