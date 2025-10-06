@@ -973,11 +973,16 @@ export default function TrainingPlan() {
               height: auto !important;
               max-height: calc(100vh - 120mm) !important;
               overflow: hidden !important;
+              border-collapse: collapse !important;
+              border-spacing: 0 !important;
             }
             
             .schedule-table tbody tr {
               height: 20mm !important;
               max-height: 20mm !important;
+              border: none !important;
+              margin: 0 !important;
+              outline: none !important;
             }
             
             .schedule-table tbody tr td {
@@ -986,6 +991,9 @@ export default function TrainingPlan() {
               padding: 1mm !important;
               vertical-align: top !important;
               overflow: hidden !important;
+              border: none !important;
+              margin: 0 !important;
+              outline: none !important;
             }
             
             .schedule-table tbody tr td.day-cell,
@@ -1066,6 +1074,11 @@ export default function TrainingPlan() {
             }
           }
         `}</style>
+        
+        {/* 不蒜子统计 - 训练计划页面访问量 */}
+        <div id="busuanzi_container_page_pv" style={{ display: 'none' }}>
+          <span id="busuanzi_value_page_pv"></span>
+        </div>
       </div>
     </div>
   );

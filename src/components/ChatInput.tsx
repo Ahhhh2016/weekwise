@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { Footer } from "./Footer";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -26,8 +27,11 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-2xl z-50">
-      <div className="flex flex-col gap-3 max-w-4xl mx-auto">
+<div className="fixed bottom-0 left-0 right-0 z-50">
+  <div className="relative border-t border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-2xl">
+    {/* 输入框区域 */}
+    <div className="flex gap-6 max-w-4xl mx-auto">
+      <div className="flex-1 flex flex-col gap-3">
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -47,6 +51,14 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
         </div>
       </div>
     </div>
+
+    {/* 浮动 Footer */}
+    <div className="absolute bottom-6 right-6 z-10">
+      <Footer />
+    </div>
+  </div>
+</div>
+
   );
 };
 
