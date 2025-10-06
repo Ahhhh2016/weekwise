@@ -5,11 +5,10 @@ const Index = () => {
   const navigate = useNavigate();
 
   const handleTrainingPlanGenerated = (trainingPlan: any) => {
-    console.log('🏠 Index - 接收到训练计划，准备导航到TrainingPlan页面');
+    console.log('🏠 Index - 接收到训练计划，存储到localStorage');
     // 将训练计划数据存储到localStorage，以便TrainingPlan页面可以访问
     localStorage.setItem('generatedTrainingPlan', JSON.stringify(trainingPlan));
-    // 导航到训练计划页面
-    navigate('/training-plan');
+    // 不再自动跳转，让用户点击按钮后在新标签页打开
   };
 
   return <ChatContainer onTrainingPlanGenerated={handleTrainingPlanGenerated} />;

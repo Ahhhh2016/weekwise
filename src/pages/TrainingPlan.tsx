@@ -261,7 +261,7 @@ export default function TrainingPlan() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex justify-center items-center py-5" >
-      <div className="poster-container w-[210mm] h-[297mm] max-w-full bg-card/95 backdrop-blur-sm p-5 rounded-3xl shadow-2xl relative border border-primary/10 flex flex-col overflow-hidden" style={{ paddingTop: '30px', paddingLeft: '50px', paddingRight: '50px' }}>
+      <div className="poster-container w-[210mm] h-[297mm] max-w-full bg-card/95 backdrop-blur-sm p-5 rounded-3xl shadow-2xl relative border border-primary/10 flex flex-col overflow-hidden" style={{ paddingTop: '6px', paddingLeft: '50px', paddingRight: '50px' }}>
         
         {/* Decorative gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none rounded-3xl"></div>
@@ -276,7 +276,7 @@ export default function TrainingPlan() {
         </button>
         
         <div className="header text-center my-4 relative z-10 flex-shrink-0">
-          <div className="inline-flex items-center gap-2 mb-2 px-4 py-1.5 bg-primary/10 rounded-full text-primary text-sm font-medium backdrop-blur-sm border border-primary/20">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-primary/10 rounded-full text-primary text-sm font-medium backdrop-blur-sm border border-primary/20">
             📅 {new Date().toLocaleDateString('zh-CN', { 
               year: 'numeric', 
               month: 'long', 
@@ -285,7 +285,7 @@ export default function TrainingPlan() {
             })}
           </div>
           {editingTitle ? (
-            <div className="mb-2" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-0" onClick={(e) => e.stopPropagation()}>
               <Input 
                 value={tempTitle}
                 onChange={(e) => setTempTitle(e.target.value)}
@@ -308,7 +308,7 @@ export default function TrainingPlan() {
             </div>
           ) : (
             <h1 
-              className="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-secondary mb-2 font-bold tracking-tight cursor-pointer relative group/title"
+              className="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-secondary mb-0 font-bold tracking-tight cursor-pointer relative group/title"
               onClick={() => {
                 setTempTitle(title);
                 setEditingTitle(true);

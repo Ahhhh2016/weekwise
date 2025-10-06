@@ -130,7 +130,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
   };
 
   return (
-    <div className="relative flex flex-col h-full bg-background overflow-hidden">
+    <div className="relative flex flex-col h-screen bg-background overflow-hidden">
       {/* 动态背景效果 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 -left-4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
@@ -139,7 +139,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       </div>
 
       {/* Header */}
-      <div className="relative border-b border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-lg">
+      <div className="relative border-b border-border/50 bg-card/30 backdrop-blur-xl p-6 shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto flex items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary via-accent to-primary bg-[length:200%_200%] animate-gradient-shift flex items-center justify-center shadow-2xl shadow-primary/50">
@@ -170,7 +170,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       </div>
 
       {/* Messages */}
-      <div className="relative flex-1 overflow-y-auto p-6 pb-32">
+      <div className="relative flex-1 overflow-y-auto p-6" style={{ paddingBottom: !isCompleted ? '200px' : '24px' }}>
         <div className="max-w-4xl mx-auto space-y-6">
           {messages.map((message) => (
             <ChatMessage
@@ -195,14 +195,14 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-foreground mb-2">{t.completedTitle}</h3>
-                      <p className="text-sm text-muted-foreground mb-6">
+                      <p className="text-sm text-muted-foreground mb-0">
                         {t.completedSubtitle}
                       </p>
                     </div>
                     <Button
                       size="lg"
                       className="bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-base font-semibold px-8 py-6 rounded-xl"
-                      onClick={() => navigate('/training-plan')}
+                      onClick={() => window.open('/training-plan', '_blank')}
                     >
                       <Dumbbell className="w-5 h-5 mr-2" />
                       {t.buttonText}
