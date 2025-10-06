@@ -54,7 +54,7 @@ export const ChatInput = ({ onSend, disabled, language = 'zh' }: ChatInputProps)
     </div>
 
     {/* 浮动 Footer */}
-    <div className="absolute bottom-6 right-6 z-10">
+    <div className="absolute bottom-6 right-6 z-10 w-80">
       <Footer language={language} />
     </div>
   </div>
