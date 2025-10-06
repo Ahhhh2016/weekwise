@@ -18,6 +18,10 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/server/index.js"
+    },
+    {
       "src": "/[^.]+",
       "dest": "/",
       "status": 200
