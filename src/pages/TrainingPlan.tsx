@@ -121,6 +121,25 @@ export default function TrainingPlan() {
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState("健身爱好者平衡型周训练计划");
   const [tempTitle, setTempTitle] = useState("");
+  
+  // AI生成的提示和策略状态
+  const [aiTips, setAiTips] = useState<string[]>([
+    "每组之间休息30-90秒，根据训练强度适当调整。",
+    "注意补充水分，训练前后适量摄入蛋白质。",
+    "若感到疲劳或不适，可适当调整训练量或休息。",
+    "训练动作要规范，避免因追求重量而牺牲动作质量。"
+  ]);
+  
+  const [aiStrategies, setAiStrategies] = useState<Array<{title: string, description: string}>>([
+    { title: "渐进式负荷", description: "每周可适当增加训练重量或组数" },
+    { title: "多样化训练", description: "力量与有氧结合，避免训练疲劳" },
+    { title: "充分恢复", description: "保证充足睡眠，有助肌肉修复" },
+    { title: "动作规范", description: "安全和动作质量为主要优先级" },
+    { title: "有氧力量结合", description: "两者结合效果最佳" },
+    { title: "早晨训练", description: "坚持4周即可形成习惯" },
+    { title: "心理建设", description: "完成后打勾增强成就感" },
+    { title: "强度管理", description: "专注于完成动作和呼吸" }
+  ]);
 
   const toggleComplete = (day: string) => {
     setCompleted(prev => ({ ...prev, [day]: !prev[day] }));
@@ -193,6 +212,19 @@ export default function TrainingPlan() {
 
       console.log('💾 TrainingPlan - 转换后的数据:', newTrainingData);
       setTrainingData(prev => ({ ...prev, ...newTrainingData }));
+      
+      // 处理AI生成的提示
+      if (aiTrainingPlan.tips && aiTrainingPlan.tips.length > 0) {
+        console.log('💡 TrainingPlan - 更新AI生成的提示:', aiTrainingPlan.tips);
+        setAiTips(aiTrainingPlan.tips);
+      }
+      
+      // 处理AI生成的策略
+      if (aiTrainingPlan.strategies && aiTrainingPlan.strategies.length > 0) {
+        console.log('🎯 TrainingPlan - 更新AI生成的策略:', aiTrainingPlan.strategies);
+        setAiStrategies(aiTrainingPlan.strategies);
+      }
+      
       setIsChatOpen(false);
       console.log('✅ TrainingPlan - 训练计划数据更新完成');
     } else {
@@ -860,18 +892,11 @@ export default function TrainingPlan() {
             💡 每日训练提示
           </h3>
           <ul className="tips-list list-none pl-0 text-[10px] leading-snug space-y-0.5">
-            <li className="pl-4 relative text-foreground before:content-['•'] before:absolute before:left-0 before:text-secondary before:font-bold">
-              每组之间休息30-90秒，根据训练强度适当调整。
-            </li>
-            <li className="pl-4 relative text-foreground before:content-['•'] before:absolute before:left-0 before:text-secondary before:font-bold">
-              注意补充水分，训练前后适量摄入蛋白质。
-            </li>
-            <li className="pl-4 relative text-foreground before:content-['•'] before:absolute before:left-0 before:text-secondary before:font-bold">
-              若感到疲劳或不适，可适当调整训练量或休息。
-            </li>
-            <li className="pl-4 relative text-foreground before:content-['•'] before:absolute before:left-0 before:text-secondary before:font-bold">
-              训练动作要规范，避免因追求重量而牺牲动作质量。
-            </li>
+            {aiTips.map((tip, index) => (
+              <li key={index} className="pl-4 relative text-foreground before:content-['•'] before:absolute before:left-0 before:text-secondary before:font-bold">
+                {tip}
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -880,70 +905,16 @@ export default function TrainingPlan() {
             🎯 关键策略
           </h3>
           <div className="strategy-grid grid grid-cols-4 gap-1.5">
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                渐进式负荷
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                每周可适当增加训练重量或组数
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                多样化训练
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                力量与有氧结合，避免训练疲劳
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                充分恢复
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                保证充足睡眠，有助肌肉修复
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                动作规范
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                安全和动作质量为主要优先级
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                有氧力量结合
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                两者结合效果最佳
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                早晨训练
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                坚持4周即可形成习惯
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                心理建设
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                完成后打勾增强成就感
-              </p>
-            </div>
-            <div className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-              <h4 className="text-primary mb-0.5 text-[10px] font-bold">
-                强度管理
-              </h4>
-              <p className="text-[9px] text-muted-foreground leading-snug">
-                专注于完成动作和呼吸
-              </p>
-            </div>
+            {aiStrategies.map((strategy, index) => (
+              <div key={index} className="strategy-item bg-card/80 backdrop-blur-sm p-1.5 rounded-xl border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+                <h4 className="text-primary mb-0.5 text-[10px] font-bold">
+                  {strategy.title}
+                </h4>
+                <p className="text-[9px] text-muted-foreground leading-snug">
+                  {strategy.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

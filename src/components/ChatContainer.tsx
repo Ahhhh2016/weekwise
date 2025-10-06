@@ -185,7 +185,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
           
           {/* 完成状态卡片 */}
           {isCompleted && (
-            <div className="flex justify-center animate-scale-in mt-8">
+            <div className="flex justify-center animate-scale-in mt-2">
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-300" />
                 <div className="relative bg-card border border-border/50 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
