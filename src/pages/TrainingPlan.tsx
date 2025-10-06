@@ -16,18 +16,8 @@ interface TrainingDay {
 
 // Helper function to get dynamic font size based on content length
 const getDynamicFontSize = (text: string, type: 'content' | 'notes') => {
-  const length = text.length;
-  if (type === 'content') {
-    if (length < 100) return 'text-[11px]';
-    if (length < 150) return 'text-[10px]';
-    if (length < 200) return 'text-[9px]';
-    return 'text-[8px]';
-  } else {
-    // notes
-    if (length < 50) return 'text-[11px]';
-    if (length < 80) return 'text-[10px]';
-    return 'text-[9px]';
-  }
+  // 统一使用12px字号
+  return 'text-[12px]';
 };
 
 export default function TrainingPlan() {
@@ -119,7 +109,7 @@ export default function TrainingPlan() {
   const [editingCell, setEditingCell] = useState<{day: string, field: keyof TrainingDay} | null>(null);
   const [tempValue, setTempValue] = useState("");
   const [editingTitle, setEditingTitle] = useState(false);
-  const [title, setTitle] = useState("健身爱好者平衡型周训练计划");
+  const [title, setTitle] = useState("默认训练计划");
   const [tempTitle, setTempTitle] = useState("");
   
   // AI生成的提示和策略状态
@@ -387,7 +377,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -466,7 +456,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -545,7 +535,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -624,7 +614,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -703,7 +693,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -782,7 +772,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -861,7 +851,7 @@ export default function TrainingPlan() {
                     <Textarea 
                       value={tempValue}
                       onChange={(e) => setTempValue(e.target.value)}
-                      className="min-h-[40px] text-[11px]"
+                      className="min-h-[70px] text-[11px]"
                       autoFocus
                       onBlur={saveEdit}
                       onKeyDown={(e) => {
@@ -900,7 +890,7 @@ export default function TrainingPlan() {
           </ul>
         </div>
 
-        <div className="strategy-section bg-gradient-to-br from-secondary/5 to-primary/5 rounded-2xl p-2 mt-2.5 relative z-10 border border-primary/20 flex-shrink-0 backdrop-blur-sm">
+        <div className="strategy-section bg-gradient-to-br from-secondary/5 to-primary/5 rounded-2xl p-2 mt-2.5 relative z-10 flex-shrink-0 backdrop-blur-sm">
           <h3 className="strategy-title text-xs text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-1.5 font-bold flex items-center">
             🎯 关键策略
           </h3>
@@ -986,13 +976,13 @@ export default function TrainingPlan() {
             }
             
             .schedule-table tbody tr {
-              height: 10mm !important;
-              max-height: 10mm !important;
+              height: 20mm !important;
+              max-height: 20mm !important;
             }
             
             .schedule-table tbody tr td {
-              height: 10mm !important;
-              max-height: 10mm !important;
+              height: 20mm !important;
+              max-height: 20mm !important;
               padding: 1mm !important;
               vertical-align: top !important;
               overflow: hidden !important;
@@ -1004,11 +994,27 @@ export default function TrainingPlan() {
               text-align: center !important;
             }
             
+            .schedule-table tbody tr td.time-cell {
+              background: linear-gradient(to bottom right, #f1f5f9, #e2e8f0) !important;
+              -webkit-print-color-adjust: exact !important;
+              color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+
             .content-cell div {
-              max-height: 8mm !important;
-              overflow: hidden !important;
-              font-size: 9px !important;
+              height: 100% !important;
+              max-height: 100% !important;
+              width: 100% !important;
+              max-width:100% !important;
+              overflow: visible !important;
+              font-size: 12px !important;
               line-height: 1.2 !important;
+              display: block !important;
+              align-items: flex-start !important;
+              padding: 1.2mm !important;
+              margin: 0 !important;
+              box-sizing: border-box !important; 
+              word-wrap: break-word !important;  
             }
             
             .tips-section, .strategy-section {
