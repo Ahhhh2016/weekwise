@@ -29,7 +29,7 @@ export const Footer: React.FC<FooterProps> = ({ language = 'zh' }) => {
   const t = translations[language];
 
   return (
-    <footer className="text-right text-sm text-[#666666] opacity-60">
+    <footer className="text-right text-xs text-[#666666] opacity-60">
       <p>
         {t.madeBy} 
         <a 
