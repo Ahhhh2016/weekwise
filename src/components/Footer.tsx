@@ -1,25 +1,52 @@
 import React from 'react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  language?: 'zh' | 'en';
+}
+
+export const Footer: React.FC<FooterProps> = ({ language = 'zh' }) => {
+  const translations = {
+    zh: {
+      madeBy: "由",
+      author: "Ahhhh2016",
+      madeBySuffix: "制作，",
+      helpMessage: "希望这个小工具对你有帮助",
+      modelInfo: "使用Github model免费模型，有使用限制",
+      statsMessage: "已经帮",
+      statsSuffix: "位朋友制定了健身计划👀"
+    },
+    en: {
+      madeBy: "Made by",
+      author: "Ahhhh2016",
+      madeBySuffix: ",",
+      helpMessage: "hope this tool helps you",
+      modelInfo: "Using Github model free tier, has usage limits",
+      statsMessage: "Already helped",
+      statsSuffix: "friends create fitness plans👀"
+    }
+  };
+
+  const t = translations[language];
+
   return (
     <footer className="text-right text-sm text-[#666666] opacity-60">
       <p>
-        由 
+        {t.madeBy} 
         <a 
           href="https://github.com/Ahhhh2016" 
           className="text-[#333333] hover:underline font-medium"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Ahhhh2016
-        </a> 制作，
-        希望这个小工具对你有帮助
+          {t.author}
+        </a> {t.madeBySuffix}
+        {t.helpMessage}
       </p>
       <p>
-        使用Github model免费模型，有使用限制
+        {t.modelInfo}
       </p>
       <p id="busuanzi_container_page_pv">
-        已经帮 <span id="busuanzi_value_page_pv">-</span> 位朋友制定了健身计划👀
+        {t.statsMessage} <span id="busuanzi_value_page_pv">-</span> {t.statsSuffix}
       </p>
     </footer>
   );

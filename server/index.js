@@ -31,7 +31,8 @@ const client = ModelClient(
 );
 
 // 训练计划生成提示词模板
-const TRAINING_PLAN_PROMPT = `你是一个专业的健身教练和训练计划制定专家。请根据用户的需求生成一个详细的周训练计划。
+const TRAINING_PLAN_PROMPTS = {
+  zh: `你是一个专业的健身教练和训练计划制定专家。请根据用户的需求生成一个详细的周训练计划。
 
 要求：
 1. 生成一个7天的训练计划，包含每天的具体训练内容
@@ -100,20 +101,94 @@ const TRAINING_PLAN_PROMPT = `你是一个专业的健身教练和训练计划�
       }
     ]
   }
-}`;
+}`,
+  en: `You are a professional fitness coach and training plan expert. Please generate a detailed weekly training plan based on the user's needs.
+
+Requirements:
+1. Generate a 7-day training plan with specific training content for each day
+2. Each training day should include: training content, duration, key points/notes
+3. Training content should balance strength training, cardio, and recovery
+4. Consider the user's fitness level and available time
+5. Provide practical training tips and strategy suggestions
+6. Use English for responses, professional but easy to understand
+
+Special requirements:
+- tips array: Provide 4-6 practical daily training tips, including rest time, nutrition, safety precautions, etc.
+- strategies array: Provide 6-8 key training strategies, each with a concise title and description, covering progressive overload, training variety, recovery, proper form, etc.
+
+Please return the training plan data in the following JSON format:
+{
+  "response": "Your response text",
+  "trainingPlan": {
+    "title": "Training Plan Title",
+    "subtitle": "Subtitle",
+    "schedule": [
+      {
+        "day": "Monday",
+        "content": "Training content",
+        "duration": "Duration",
+        "notes": "Key points/notes"
+      }
+    ],
+    "tips": [
+      "Rest 30-90 seconds between sets, adjust based on training intensity",
+      "Stay hydrated, consume protein before and after training",
+      "If feeling fatigued or unwell, adjust training volume or rest",
+      "Maintain proper form, avoid sacrificing technique for weight"
+    ],
+    "strategies": [
+      {
+        "title": "Progressive Overload",
+        "description": "Gradually increase training weight or sets weekly"
+      },
+      {
+        "title": "Training Variety",
+        "description": "Combine strength and cardio to avoid training fatigue"
+      },
+      {
+        "title": "Adequate Recovery",
+        "description": "Ensure sufficient sleep for muscle repair"
+      },
+      {
+        "title": "Proper Form",
+        "description": "Safety and movement quality are top priorities"
+      },
+      {
+        "title": "Cardio-Strength Balance",
+        "description": "Combining both yields the best results"
+      },
+      {
+        "title": "Morning Training",
+        "description": "Consistency for 4 weeks builds lasting habits"
+      },
+      {
+        "title": "Mental Preparation",
+        "description": "Check off completed workouts to boost motivation"
+      },
+      {
+        "title": "Intensity Management",
+        "description": "Focus on completing movements and breathing"
+      }
+    ]
+  }
+}`
+};
 
 // 聊天API端点
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message, history = [] } = req.body;
+        const { message, history = [], language = 'zh' } = req.body;
         
         if (!message) {
             return res.status(400).json({ error: '消息内容不能为空' });
         }
 
+        // 根据语言选择相应的提示词
+        const prompt = TRAINING_PLAN_PROMPTS[language] || TRAINING_PLAN_PROMPTS.zh;
+
         // 构建消息历史
         const messages = [
-            { role: "system", content: TRAINING_PLAN_PROMPT },
+            { role: "system", content: prompt },
             ...history,
             { role: "user", content: message }
         ];
@@ -160,8 +235,53 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('Chat API error:', error);
-        res.status(500).json({ 
-            error: '服务器内部错误',
+        
+        // 检查是否是rate limit或API不可用错误
+        let errorType = 'unknown';
+        let userMessage = '服务器内部错误';
+        let statusCode = 500;
+        
+        // 根据语言选择错误消息
+        const errorMessages = {
+            zh: {
+                rate_limit: '请求过于频繁，请稍后再试',
+                service_unavailable: 'AI服务暂时不可用，请稍后再试',
+                auth_error: 'AI服务认证失败，请联系管理员',
+                quota_exceeded: 'AI服务配额已用完，请稍后再试',
+                default: '抱歉，AI服务暂时不可用。请稍后再试。'
+            },
+            en: {
+                rate_limit: 'Too many requests. Please wait 1-2 minutes before trying again.',
+                service_unavailable: 'AI service is temporarily unavailable. Please try again later.',
+                auth_error: 'AI service authentication failed. Please contact administrator.',
+                quota_exceeded: 'AI service quota exceeded. Please try again later.',
+                default: 'Sorry, AI service is temporarily unavailable. Please try again later.'
+            }
+        };
+        
+        if (error.message.includes('rate limit') || error.message.includes('429')) {
+            errorType = 'rate_limit';
+            userMessage = errorMessages[language]?.rate_limit || errorMessages.zh.rate_limit;
+            statusCode = 429;
+        } else if (error.message.includes('timeout') || error.message.includes('ECONNRESET') || error.message.includes('ENOTFOUND')) {
+            errorType = 'service_unavailable';
+            userMessage = errorMessages[language]?.service_unavailable || errorMessages.zh.service_unavailable;
+            statusCode = 503;
+        } else if (error.message.includes('401') || error.message.includes('unauthorized')) {
+            errorType = 'auth_error';
+            userMessage = errorMessages[language]?.auth_error || errorMessages.zh.auth_error;
+            statusCode = 401;
+        } else if (error.message.includes('quota') || error.message.includes('limit')) {
+            errorType = 'quota_exceeded';
+            userMessage = errorMessages[language]?.quota_exceeded || errorMessages.zh.quota_exceeded;
+            statusCode = 429;
+        } else {
+            userMessage = errorMessages[language]?.default || errorMessages.zh.default;
+        }
+        
+        res.status(statusCode).json({ 
+            error: userMessage,
+            errorType: errorType,
             details: error.message 
         });
     }
@@ -170,16 +290,20 @@ app.post('/api/chat', async (req, res) => {
 // 生成训练计划API端点
 app.post('/api/generate-plan', async (req, res) => {
     try {
-        const { prompt } = req.body;
+        const { prompt, language = 'zh' } = req.body;
+        
+        // 根据语言选择相应的提示词
+        const systemPrompt = TRAINING_PLAN_PROMPTS[language] || TRAINING_PLAN_PROMPTS.zh;
+        const defaultPrompt = language === 'en' ? "Please generate a general weekly training plan" : "请生成一个通用的周训练计划";
         
         const messages = [
             { 
                 role: "system", 
-                content: TRAINING_PLAN_PROMPT 
+                content: systemPrompt 
             },
             { 
                 role: "user", 
-                content: prompt || "请生成一个通用的周训练计划" 
+                content: prompt || defaultPrompt 
             }
         ];
 
@@ -224,8 +348,53 @@ app.post('/api/generate-plan', async (req, res) => {
 
     } catch (error) {
         console.error('Generate plan API error:', error);
-        res.status(500).json({ 
-            error: '生成训练计划失败',
+        
+        // 检查是否是rate limit或API不可用错误
+        let errorType = 'unknown';
+        let userMessage = '生成训练计划失败';
+        let statusCode = 500;
+        
+        // 根据语言选择错误消息
+        const errorMessages = {
+            zh: {
+                rate_limit: '请求过于频繁，请稍后再试',
+                service_unavailable: 'AI服务暂时不可用，请稍后再试',
+                auth_error: 'AI服务认证失败，请联系管理员',
+                quota_exceeded: 'AI服务配额已用完，请稍后再试',
+                default: '生成训练计划失败'
+            },
+            en: {
+                rate_limit: 'Too many requests. Please wait 1-2 minutes before trying again.',
+                service_unavailable: 'AI service is temporarily unavailable. Please try again later.',
+                auth_error: 'AI service authentication failed. Please contact administrator.',
+                quota_exceeded: 'AI service quota exceeded. Please try again later.',
+                default: 'Failed to generate training plan'
+            }
+        };
+        
+        if (error.message.includes('rate limit') || error.message.includes('429')) {
+            errorType = 'rate_limit';
+            userMessage = errorMessages[language]?.rate_limit || errorMessages.zh.rate_limit;
+            statusCode = 429;
+        } else if (error.message.includes('timeout') || error.message.includes('ECONNRESET') || error.message.includes('ENOTFOUND')) {
+            errorType = 'service_unavailable';
+            userMessage = errorMessages[language]?.service_unavailable || errorMessages.zh.service_unavailable;
+            statusCode = 503;
+        } else if (error.message.includes('401') || error.message.includes('unauthorized')) {
+            errorType = 'auth_error';
+            userMessage = errorMessages[language]?.auth_error || errorMessages.zh.auth_error;
+            statusCode = 401;
+        } else if (error.message.includes('quota') || error.message.includes('limit')) {
+            errorType = 'quota_exceeded';
+            userMessage = errorMessages[language]?.quota_exceeded || errorMessages.zh.quota_exceeded;
+            statusCode = 429;
+        } else {
+            userMessage = errorMessages[language]?.default || errorMessages.zh.default;
+        }
+        
+        res.status(statusCode).json({ 
+            error: userMessage,
+            errorType: errorType,
             details: error.message 
         });
     }

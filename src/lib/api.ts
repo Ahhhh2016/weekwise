@@ -44,10 +44,33 @@ export interface HealthResponse {
   };
 }
 
+export interface ApiError {
+  error: string;
+  errorType?: 'rate_limit' | 'service_unavailable' | 'auth_error' | 'quota_exceeded' | 'unknown';
+  details?: string;
+}
+
 class ApiService {
   private baseUrl = '/api';
 
-  async chat(message: string, history: ChatMessage[] = []): Promise<ChatResponse> {
+  private async handleApiError(response: Response): Promise<never> {
+    let errorData: ApiError;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = {
+        error: '网络请求失败',
+        errorType: 'unknown'
+      };
+    }
+
+    const error = new Error(errorData.error);
+    (error as any).errorType = errorData.errorType;
+    (error as any).details = errorData.details;
+    throw error;
+  }
+
+  async chat(message: string, history: ChatMessage[] = [], language: 'zh' | 'en' = 'zh'): Promise<ChatResponse> {
     const response = await fetch(`${this.baseUrl}/chat`, {
       method: 'POST',
       headers: {
@@ -56,12 +79,12 @@ class ApiService {
       body: JSON.stringify({
         message,
         history,
+        language,
       }),
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.details || error.error || '聊天请求失败');
+      await this.handleApiError(response);
     }
 
     return response.json();
@@ -79,8 +102,7 @@ class ApiService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.details || error.error || '生成训练计划失败');
+      await this.handleApiError(response);
     }
 
     return response.json();

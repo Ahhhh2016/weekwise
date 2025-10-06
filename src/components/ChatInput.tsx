@@ -7,9 +7,10 @@ import { Footer } from "./Footer";
 interface ChatInputProps {
   onSend: (message: string) => void;
   disabled?: boolean;
+  language?: 'zh' | 'en';
 }
 
-export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
+export const ChatInput = ({ onSend, disabled, language = 'zh' }: ChatInputProps) => {
   const [message, setMessage] = useState("");
 
   const handleSend = () => {
@@ -54,7 +55,7 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
 
     {/* 浮动 Footer */}
     <div className="absolute bottom-6 right-6 z-10">
-      <Footer />
+      <Footer language={language} />
     </div>
   </div>
 </div>

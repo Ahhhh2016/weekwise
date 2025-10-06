@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { Button } from "./ui/button";
-import { Dumbbell, CheckCircle2, Languages } from "lucide-react";
+import { Dumbbell, CheckCircle2, Languages, RotateCcw } from "lucide-react";
 import { apiService } from "../lib/api";
 
 interface Message {
@@ -22,6 +22,8 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [lastError, setLastError] = useState<{ type: string; message: string } | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const translations = {
@@ -64,14 +66,18 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSendMessage = async (text: string) => {
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      isUser: true,
-    };
+  const handleSendMessage = async (text: string, isRetry = false) => {
+    if (!isRetry) {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text,
+        isUser: true,
+      };
+      setMessages((prev) => [...prev, userMessage]);
+      setLastError(null);
+      setRetryCount(0);
+    }
 
-    setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
     try {
@@ -81,7 +87,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
         content: msg.text
       }));
 
-      const chatResponse = await apiService.chat(text, chatHistory);
+      const chatResponse = await apiService.chat(text, chatHistory, language);
       
       // 添加调试信息
       console.log('🔍 ChatContainer - AI响应数据:', chatResponse);
@@ -95,6 +101,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       
       setMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
+      setLastError(null);
 
       // 检查是否有训练计划生成
       if (chatResponse.trainingPlan) {
@@ -113,19 +120,76 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       } else {
         console.log('❌ ChatContainer - 未检测到训练计划数据');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error calling AI API:', error);
+      
+      // 根据错误类型显示不同的错误信息
+      let errorText = '';
+      const errorType = error.errorType;
+      
+      if (language === 'zh') {
+        switch (errorType) {
+          case 'rate_limit':
+            errorText = "请求过于频繁，请稍后再试。建议等待1-2分钟后重试。";
+            break;
+          case 'service_unavailable':
+            errorText = "AI服务暂时不可用，请稍后再试。我们正在努力恢复服务。";
+            break;
+          case 'auth_error':
+            errorText = "AI服务认证失败，请联系管理员。";
+            break;
+          case 'quota_exceeded':
+            errorText = "AI服务配额已用完，请稍后再试。";
+            break;
+          default:
+            errorText = "抱歉，AI服务暂时不可用。请稍后再试。";
+        }
+      } else {
+        switch (errorType) {
+          case 'rate_limit':
+            errorText = "Too many requests. Please wait 1-2 minutes before trying again.";
+            break;
+          case 'service_unavailable':
+            errorText = "AI service is temporarily unavailable. Please try again later.";
+            break;
+          case 'auth_error':
+            errorText = "AI service authentication failed. Please contact administrator.";
+            break;
+          case 'quota_exceeded':
+            errorText = "AI service quota exceeded. Please try again later.";
+            break;
+          default:
+            errorText = "Sorry, AI service is temporarily unavailable. Please try again later.";
+        }
+      }
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: language === 'zh' 
-          ? "抱歉，AI服务暂时不可用。请稍后再试。" 
-          : "Sorry, AI service is temporarily unavailable. Please try again later.",
+        text: errorText,
         isUser: false,
       };
       
       setMessages((prev) => [...prev, errorMessage]);
       setIsTyping(false);
+      setLastError({ type: errorType, message: errorText });
+
+      // 对于某些错误类型，自动重试
+      if (retryCount < 2 && (errorType === 'service_unavailable' || errorType === 'quota_exceeded')) {
+        setTimeout(() => {
+          console.log(`自动重试第 ${retryCount + 1} 次...`);
+          handleRetry();
+        }, 3000); // 3秒后自动重试
+      }
+    }
+  };
+
+  const handleRetry = () => {
+    if (messages.length > 0) {
+      const lastUserMessage = messages.filter(msg => msg.isUser).pop();
+      if (lastUserMessage) {
+        setRetryCount(prev => prev + 1);
+        handleSendMessage(lastUserMessage.text, true);
+      }
     }
   };
 
@@ -172,12 +236,32 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       {/* Messages */}
       <div className="relative flex-1 overflow-y-auto p-6" style={{ paddingBottom: !isCompleted ? '200px' : '24px' }}>
         <div className="max-w-4xl mx-auto space-y-6">
-          {messages.map((message) => (
-            <ChatMessage
-              key={message.id}
-              message={message.text}
-              isUser={message.isUser}
-            />
+          {messages.map((message, index) => (
+            <div key={message.id}>
+              <ChatMessage
+                message={message.text}
+                isUser={message.isUser}
+              />
+              {/* 在错误消息后显示重试按钮 */}
+              {!message.isUser && 
+               lastError && 
+               index === messages.length - 1 && 
+               retryCount < 3 && 
+               (lastError.type === 'rate_limit' || lastError.type === 'service_unavailable' || lastError.type === 'quota_exceeded') && (
+                <div className="flex justify-center mt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRetry}
+                    disabled={isTyping}
+                    className="flex items-center gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    {language === 'zh' ? '重试' : 'Retry'}
+                  </Button>
+                </div>
+              )}
+            </div>
           ))}
           {isTyping && (
             <ChatMessage message="" isUser={false} isTyping={true} />
@@ -220,7 +304,7 @@ export const ChatContainer = ({ onTrainingPlanGenerated }: ChatContainerProps) =
       {/* Input - 只在未完成时显示 */}
       {!isCompleted && (
         <div className="relative">
-          <ChatInput onSend={handleSendMessage} disabled={isTyping} />
+          <ChatInput onSend={handleSendMessage} disabled={isTyping} language={language} />
         </div>
       )}
     </div>

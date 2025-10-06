@@ -176,13 +176,22 @@ export default function TrainingPlan() {
       // 转换AI生成的训练计划数据格式
       const newTrainingData: Record<string, TrainingDay> = {};
       const dayMapping: Record<string, string> = {
+        // 中文日期映射
         '周一': 'monday',
         '周二': 'tuesday', 
         '周三': 'wednesday',
         '周四': 'thursday',
         '周五': 'friday',
         '周六': 'saturday',
-        '周日': 'sunday'
+        '周日': 'sunday',
+        // 英文日期映射
+        'Monday': 'monday',
+        'Tuesday': 'tuesday',
+        'Wednesday': 'wednesday',
+        'Thursday': 'thursday',
+        'Friday': 'friday',
+        'Saturday': 'saturday',
+        'Sunday': 'sunday'
       };
 
       console.log('🔄 TrainingPlan - 开始转换数据格式');
