@@ -275,17 +275,6 @@ export default function TrainingPlan() {
         </button>
         
         <div className="header text-center my-4 relative z-10 flex-shrink-0">
-          {/* Logo */}
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center gap-3 px-4 py-2 bg-primary/10 rounded-full backdrop-blur-sm border border-primary/20">
-              <img 
-                src="/favicon.svg" 
-                alt="WeekWise Logo" 
-                className="w-6 h-6"
-              />
-              <span className="text-primary text-sm font-bold">WeekWise</span>
-            </div>
-          </div>
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-primary/10 rounded-full text-primary text-sm font-medium backdrop-blur-sm border border-primary/20">
             📅 {new Date().toLocaleDateString('zh-CN', { 
               year: 'numeric', 
@@ -1094,11 +1083,6 @@ export default function TrainingPlan() {
             }
           }
         `}</style>
-        
-        {/* 不蒜子统计 - 训练计划页面访问量 */}
-        <div id="busuanzi_container_page_pv" style={{ display: 'none' }}>
-          <span id="busuanzi_value_page_pv"></span>
-        </div>
       </div>
     </div>
   );
