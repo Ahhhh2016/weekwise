@@ -1,6 +1,11 @@
 # WeekWise - AI驱动的周训练计划应用
 
-一个现代化的健身训练计划应用，集成了AI助手来生成个性化的周训练计划。
+<p align="center">
+  <img width="751" height="421" alt="image" src="https://github.com/user-attachments/assets/377dd339-6a57-48d7-b819-f31f2610cbb9" />
+</p>
+
+一个由 AI 驱动的周训练计划生成与打印工具，通过对话制定个性化的每周训练计划，支持编辑和打印功能，帮助你保持节奏、坚持目标。
+访问网站：[https://weekwise-trainingplan.vercel.app/](https://weekwise-trainingplan.vercel.app/)
 
 ## 功能特性
 
@@ -9,8 +14,8 @@
 - ✏️ **可编辑内容** - 点击即可编辑训练内容、时长和备注
 - ✅ **进度跟踪** - 每日完成状态标记
 - 🖨️ **打印友好** - 优化的打印样式，支持A4纸张
-- 🎨 **现代UI** - 基于shadcn/ui的美观界面
-- 📱 **响应式设计** - 适配各种屏幕尺寸
+- 🌐 **中英文切换** - 一键切换界面语言，支持 English / 中文
+
 
 ## 技术栈
 
@@ -35,11 +40,6 @@ npm install
 ```
 
 ### 2. 环境配置
-
-复制环境变量示例文件：
-```bash
-cp env.example .env
-```
 
 编辑 `.env` 文件，添加你的GitHub AI Token：
 ```env
@@ -72,11 +72,9 @@ npm run dev
 ## 使用指南
 
 ### 生成训练计划
-
-1. 点击训练计划页面右上角的🤖按钮打开AI助手
-2. 描述你的健身目标、经验水平、可用时间等信息
-3. AI会生成个性化的周训练计划
-4. 训练计划会自动更新到页面上
+1. 描述你的健身目标、经验水平、可用时间等信息
+2. AI会生成个性化的周训练计划
+3. 生成后点击“打印周训练计划“按钮，跳转到新的页面
 
 ### 编辑训练计划
 
@@ -181,3 +179,188 @@ npm run dev:server
 ## 许可证
 
 MIT License
+
+## 待开发功能
+- [ ] 移动端适配
+- [ ] 英文训练计划生成
+
+---
+
+# WeekWise - AI-Powered Weekly Training Plan App
+
+An AI-powered tool for generating and printing personalized weekly training plans. Through natural conversation, you can design a tailored weekly workout schedule, edit it, and print it — helping you stay consistent and reach your fitness goals.
+Visit the website: [https://weekwise-trainingplan.vercel.app/](https://weekwise-trainingplan.vercel.app/)
+
+## Features
+
+- 🤖 AI Fitness Coach – Uses GitHub AI to generate personalized training plans
+- 📅 Weekly Training Schedule – A complete 7-day workout routine with training tips and key strategies
+- ✏️ Editable Content – Click to modify exercises, duration, and notes
+- ✅ Progress Tracking – Mark your daily completion status
+- 🖨️ Print-Friendly Design – Optimized layout for A4 printing 
+- 🌐 Bilingual Interface – One-click switch between English / 中文
+
+## Tech Stack
+
+### Frontend
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui component library
+- React Router
+
+### Backend
+
+- Node.js + Express
+- GitHub AI API
+- CORS support
+
+## Getting Started
+
+### 1. Install dependencies
+```bash
+npm install
+```
+
+### 2. Environment setup
+
+Edit the `.env` file and add your GitHub AI Token:
+
+```
+GITHUB_TOKEN=your_github_token_here
+PORT=3001
+```
+
+### 3. Start the development servers
+#### Option 1: Start both frontend and backend together (recommended)
+```bash
+npm run dev:full
+```
+
+#### Option 2: Start them separately
+```bash
+# Terminal 1: Start the backend server
+npm run dev:server
+
+# Terminal 2: Start the frontend dev server
+npm run dev
+```
+
+### 4. Access the app
+
+Frontend: http://localhost:8080
+Backend API: http://localhost:3001
+Health check: http://localhost:3001/api/health
+
+## User Guide
+
+### Generate a training plan
+
+1. Describe your fitness goals, experience level, and available time.
+2. The AI will generate a personalized weekly plan.
+3. After generation, click the “Print Weekly Plan” button to open the printable view.
+
+### Edit your training plan
+
+- Click any exercise, duration, or note to edit it directly.
+- Click the title to rename the plan.
+- Use checkboxes to mark daily completion.
+
+### Print your training plan
+- Click the 🖨️ button at the top right or press Ctrl+P.
+- The page is optimized for A4 paper printing.
+
+## API Endpoints
+### Chat API
+
+```
+POST /api/chat
+Content-Type: application/json
+
+{
+  "message": "用户消息",
+  "history": [聊天历史]
+}
+```
+
+### Generate Training Plan API
+```
+POST /api/generate-plan
+Content-Type: application/json
+
+{
+  "prompt": "训练计划描述"
+}
+```
+
+### Health Check
+```
+GET /api/health
+```
+
+## Project Structure
+```
+weekwise/
+├── src/                    # Frontend source code
+│   ├── components/         # React components
+│   ├── pages/              # Page components
+│   ├── lib/                # Utilities and API services
+│   └── hooks/              # Custom React hooks
+├── server/                 # Backend server
+│   └── index.js            # Express server entry point
+├── public/                 # Static assets
+└── dist/                   # Build output
+```
+
+## Development Guide
+### Adding a new API endpoint
+1. Add a new route in server/index.js
+2. Add the corresponding API function in src/lib/api.ts
+3. Call the API function from your frontend component
+
+### Customizing the training plan format
+
+Modify the TRAINING_PLAN_PROMPT in server/index.js to adjust how the AI structures the generated content.
+
+### Deployment
+Build for production
+```bash
+npm run build
+```
+
+Start the production server
+```
+npm run dev:server
+```
+
+## Troubleshooting
+### Common Issues
+
+1. AI features not working
+
+- Check whether your GITHUB_TOKEN in .env is correctly set
+- Ensure your network connection is stable
+
+2. Frontend cannot connect to backend
+
+- Make sure the backend server is running on port 3001
+- Check your Vite proxy configuration
+
+3. Printing layout issues
+
+- Use Chrome or Edge browsers
+- Make sure “Print Background Colors” is enabled
+
+## Contributing
+
+Contributions are welcome!
+Please submit Issues or Pull Requests to help improve this project.
+
+## License
+
+MIT License
+
+## Features To Be Implemented
+
+-[ ] Mobile adaptation
+-[ ] English-based training plan generation
