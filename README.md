@@ -5,6 +5,7 @@
 </p>
 
 一个由 AI 驱动的周训练计划生成与打印工具，通过对话制定个性化的每周训练计划，支持编辑和打印功能，帮助你保持节奏、坚持目标。
+
 访问网站：[https://weekwise-trainingplan.vercel.app/](https://weekwise-trainingplan.vercel.app/)
 
 ## 功能特性
@@ -189,16 +190,17 @@ MIT License
 # WeekWise - AI-Powered Weekly Training Plan App
 
 An AI-powered tool for generating and printing personalized weekly training plans. Through natural conversation, you can design a tailored weekly workout schedule, edit it, and print it — helping you stay consistent and reach your fitness goals.
+
 Visit the website: [https://weekwise-trainingplan.vercel.app/](https://weekwise-trainingplan.vercel.app/)
 
 ## Features
 
-- 🤖 AI Fitness Coach – Uses GitHub AI to generate personalized training plans
-- 📅 Weekly Training Schedule – A complete 7-day workout routine with training tips and key strategies
-- ✏️ Editable Content – Click to modify exercises, duration, and notes
-- ✅ Progress Tracking – Mark your daily completion status
-- 🖨️ Print-Friendly Design – Optimized layout for A4 printing 
-- 🌐 Bilingual Interface – One-click switch between English / 中文
+- 🤖 **AI Fitness Coach** – Uses GitHub AI to generate personalized training plans
+- 📅 **Weekly Training Schedule** – A complete 7-day workout routine with training tips and key strategies
+- ✏️ **Editable Content** – Click to modify exercises, duration, and notes
+- ✅ **Progress Tracking** – Mark your daily completion status
+- 🖨️ **Print-Friendly Design** – Optimized layout for A4 printing 
+- 🌐 **Bilingual Interface** – One-click switch between English / 中文
 
 ## Tech Stack
 
@@ -249,7 +251,9 @@ npm run dev
 ### 4. Access the app
 
 Frontend: http://localhost:8080
+
 Backend API: http://localhost:3001
+
 Health check: http://localhost:3001/api/health
 
 ## User Guide
@@ -322,13 +326,13 @@ weekwise/
 
 Modify the TRAINING_PLAN_PROMPT in server/index.js to adjust how the AI structures the generated content.
 
-### Deployment
-Build for production
+## Deployment
+### Build for production
 ```bash
 npm run build
 ```
 
-Start the production server
+### Start the production server
 ```
 npm run dev:server
 ```
@@ -336,17 +340,17 @@ npm run dev:server
 ## Troubleshooting
 ### Common Issues
 
-1. AI features not working
+1. **AI features not working**
 
 - Check whether your GITHUB_TOKEN in .env is correctly set
 - Ensure your network connection is stable
 
-2. Frontend cannot connect to backend
+2. **Frontend cannot connect to backend**
 
 - Make sure the backend server is running on port 3001
 - Check your Vite proxy configuration
 
-3. Printing layout issues
+3. **Printing layout issues**
 
 - Use Chrome or Edge browsers
 - Make sure “Print Background Colors” is enabled
@@ -362,5 +366,5 @@ MIT License
 
 ## Features To Be Implemented
 
--[ ] Mobile adaptation
--[ ] English-based training plan generation
+- [ ] Mobile adaptation
+- [ ] English-based training plan generation
